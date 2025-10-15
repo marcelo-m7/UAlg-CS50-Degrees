@@ -91,9 +91,71 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # raise NotImplementedError
 
-    # TODO
-    raise NotImplementedError
+    # """
+    # Retorna o caminho mais curto (lista de pares (id_filme, id_pessoa))
+    # que liga `origem` a `destino` usando busca em largura (BFS).
+    #  - Uma lista de tuplas (id_filme, id_pessoa) na ordem da origem para o destino,
+    #    ou `None` se não existir caminho.
+    # """
+
+    pessoa_origem : str = source
+    pessoa_destino : str = target
+    caminho : list[tuple[str, str]] = []
+    
+    def init_frontier(estado_inicial: str) -> QueueFrontier:
+        """
+        Inicializa e devolve uma QueueFrontier contendo o nó inicial.
+
+        Args:
+            estado_inicial: id_pessoa do nó inicial.
+
+        Returns:
+            Uma instância de QueueFrontier com o nó inicial adicionado.
+        """
+        inicio_caminho = Node(state=estado_inicial, parent=None, action=None)
+        fronteira = QueueFrontier()
+        fronteira.add(inicio_caminho)
+        return fronteira
+
+    def get_path_souce_to_target(no: Node) -> list[tuple[str, str]]:
+        """
+        Reconstrói o caminho desde `no` até o nó inicial, retornando uma
+        lista de pares (id_filme, id_pessoa) em ordem da origem para o destino.
+
+        Args:
+            no: o nó objetivo (instância de Node) cuja cadeia de pais leva à origem.
+
+        Returns:
+            Lista de tuplas (id_filme, id_pessoa).
+        """
+        pass
+
+    def adicionar_vizinhos() -> list[tuple[str, str]] | None:
+        pass
+
+    # Inicializa fronteira e explorados
+    fronteira = init_frontier(pessoa_origem)
+    explorados: set[str] = set()
+    destino = pessoa_destino  
+
+    # Loop principal do BFS
+    while not fronteira.empty():
+        no = fronteira.remove()
+
+        if no.state == destino:
+            return get_path_souce_to_target(no)
+
+        explorados.add(no.state)
+
+        # Se um vizinho for o destino, adicionar_vizinhos devolve o caminho
+        caminho = adicionar_vizinhos()
+        if pessoa_destino is not None:
+            return pessoa_destino
+        
+    if caminho == []:
+        return None
 
 
 def person_id_for_name(name):
