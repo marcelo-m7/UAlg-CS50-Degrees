@@ -32,7 +32,7 @@ Este repositório faz parte dos trabalhos práticos da disciplina de Inteligênc
 
 ## Implementação da Função `shortest_path`
 
-A função `shortest_path` é responsável por encontrar o menor caminho entre dois atores utilizando o algoritmo de Busca em Largura (BFS), ideal para encontrar caminhos mínimos em grafos não ponderados.
+A função `shortest_path` é responsável por encontrar o menor caminho entre dois atores utilizando o algoritmo de Busca em Largura (BFS – Breadth-First Search)), ideal para encontrar caminhos mínimos em grafos não ponderados.
 
 ### Passos do Algoritmo
 

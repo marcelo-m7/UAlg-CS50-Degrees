@@ -91,19 +91,20 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-    # Initialize frontier with starting node
+    # Inicialização do BFS: cria o nó inicial (ator de origem) e adiciona à fila (fronteira)
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier()
     frontier.add(start)
-    
-    # Keep track of explored states
+    # Conjunto para registrar estados já explorados e evitar revisitas
     explored = set()
+    print(frontier.frontier.__repr__()   + " <- frontier")
     
+    # Exploração: enquanto houver nós na fila, processa o próximo da fila (FIFO)
     while not frontier.empty():
-        # Remove node from frontier
+        # Remove o nó mais antigo da fila (garante ordem de distância crescente)
         node = frontier.remove()
-        
-        # If we have reached the target, reconstruct and return the path
+
+        # Se o nó atual é o destino, reconstrói e retorna o caminho percorrido
         if node.state == target:
             path = []
             while node.parent is not None:
@@ -111,16 +112,18 @@ def shortest_path(source, target):
                 node = node.parent
             path.reverse()
             return path
-        
-        # Mark state as explored
+
+        # Marca o nó atual como explorado
         explored.add(node.state)
-        
-        # Add neighbors to frontier
+        print(explored.__repr__()   + " <- explored")
+
+        # Para cada vizinho (ator conectado por filme), verifica se já foi explorado ou está na fila
         for movie_id, person_id in neighbors_for_person(node.state):
             if person_id not in explored and not frontier.contains_state(person_id):
+                # Adiciona vizinho à fila para futura exploração
                 child = Node(state=person_id, parent=node, action=movie_id)
+                # Se o vizinho é o destino, reconstrói e retorna o caminho imediatamente
                 if person_id == target:
-                    # Reconstruct path immediately if target found
                     path = []
                     while child.parent is not None:
                         path.append((child.action, child.state))
@@ -128,8 +131,8 @@ def shortest_path(source, target):
                     path.reverse()
                     return path
                 frontier.add(child)
-    
-    # No path found
+
+    # Se a fila esvaziar sem encontrar o destino, não há caminho possível
     return None
 
 
