@@ -91,71 +91,92 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-    # raise NotImplementedError
 
-    # """
-    # Retorna o caminho mais curto (lista de pares (id_filme, id_pessoa))
-    # que liga `origem` a `destino` usando busca em largura (BFS).
-    #  - Uma lista de tuplas (id_filme, id_pessoa) na ordem da origem para o destino,
-    #    ou `None` se não existir caminho.
-    # """
+    source_person: str = source
+    target_person: str = target
+    path: list[tuple[str, str]] = []
 
-    pessoa_origem : str = source
-    pessoa_destino : str = target
-    caminho : list[tuple[str, str]] = []
-    
-    def init_frontier(estado_inicial: str) -> QueueFrontier:
+    def initialize_frontier(initial_state: str) -> QueueFrontier:
         """
         Inicializa e devolve uma QueueFrontier contendo o nó inicial.
 
         Args:
-            estado_inicial: id_pessoa do nó inicial.
+            initial_state: id da pessoa do nó inicial.
 
         Returns:
             Uma instância de QueueFrontier com o nó inicial adicionado.
         """
-        inicio_caminho = Node(state=estado_inicial, parent=None, action=None)
-        fronteira = QueueFrontier()
-        fronteira.add(inicio_caminho)
-        return fronteira
+        start_node = Node(state=initial_state, parent=None, action=None)
+        frontier = QueueFrontier()
+        frontier.add(start_node)
+        return frontier
 
-    def get_path_souce_to_target(no: Node) -> list[tuple[str, str]]:
+    def reconstruct_path(node: Node) -> list[tuple[str, str]]:
         """
-        Reconstrói o caminho desde `no` até o nó inicial, retornando uma
+        Reconstrói o caminho desde `node` até o nó inicial, retornando uma
         lista de pares (id_filme, id_pessoa) em ordem da origem para o destino.
 
         Args:
-            no: o nó objetivo (instância de Node) cuja cadeia de pais leva à origem.
+            node: o nó objetivo (instância de Node) cuja cadeia de pais leva à origem.
 
         Returns:
             Lista de tuplas (id_filme, id_pessoa).
+
+        Exemplo:
+            Suponha que temos o seguinte caminho:
+            - Nó inicial: Node(state="1", parent=None, action=None)
+            - Nó intermediário: Node(state="2", parent=nó_inicial, action="A")
+            - Nó final: Node(state="3", parent=nó_intermediário, action="B")
+
+            O caminho reconstruído será:
+            [("A", "2"), ("B", "3")]
         """
-        pass
+        path: list[tuple[str, str]] = []
+        while node.parent is not None:
+            # Adiciona o par (id_filme, id_pessoa) ao caminho
+            path.append((node.action, node.state))
+            node = node.parent  # Move para o nó pai
+        path.reverse()  # Inverte o caminho para que fique da origem ao destino
+        return path
 
-    def adicionar_vizinhos() -> list[tuple[str, str]] | None:
-        pass
+    def add_neighbors(node: Node, frontier: QueueFrontier, explored: set[str], target: str) -> list[tuple[str, str]] | None:
+        """
+        Adiciona os vizinhos do nó atual à fronteira, retornando o caminho se o destino for encontrado.
 
-    # Inicializa fronteira e explorados
-    fronteira = init_frontier(pessoa_origem)
-    explorados: set[str] = set()
-    destino = pessoa_destino  
+        Args:
+            node: nó atual.
+            frontier: fronteira de busca.
+            explored: conjunto de estados já explorados.
+            target: id da pessoa do destino.
 
-    # Loop principal do BFS
-    while not fronteira.empty():
-        no = fronteira.remove()
-
-        if no.state == destino:
-            return get_path_souce_to_target(no)
-
-        explorados.add(no.state)
-
-        # Se um vizinho for o destino, adicionar_vizinhos devolve o caminho
-        caminho = adicionar_vizinhos()
-        if pessoa_destino is not None:
-            return pessoa_destino
-        
-    if caminho == []:
+        Returns:
+            Lista de tuplas (id_filme, id_pessoa) se o destino for encontrado, senão None.
+        """
+        for movie_id, person_id in neighbors_for_person(node.state):
+            if person_id not in explored and not frontier.contains_state(person_id):
+                child = Node(state=person_id, parent=node, action=movie_id)
+                if person_id == target:
+                    return reconstruct_path(child)
+                frontier.add(child)
         return None
+
+    frontier = initialize_frontier(source_person)
+    explored: set[str] = set()
+
+    while not frontier.empty():
+        node = frontier.remove()
+
+        if node.state == target_person:
+            return reconstruct_path(node)
+
+        explored.add(node.state)
+
+        # Se um vizinho for o destino, add_neighbors retorna o caminho
+        path = add_neighbors(node, frontier, explored, target_person)
+        if path is not None:
+            return path
+
+    return None
 
 
 def person_id_for_name(name):
