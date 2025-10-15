@@ -91,91 +91,45 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-
-    source_person: str = source
-    target_person: str = target
-    path: list[tuple[str, str]] = []
-
-    def initialize_frontier(initial_state: str) -> QueueFrontier:
-        """
-        Inicializa e devolve uma QueueFrontier contendo o nó inicial.
-
-        Args:
-            initial_state: id da pessoa do nó inicial.
-
-        Returns:
-            Uma instância de QueueFrontier com o nó inicial adicionado.
-        """
-        start_node = Node(state=initial_state, parent=None, action=None)
-        frontier = QueueFrontier()
-        frontier.add(start_node)
-        return frontier
-
-    def reconstruct_path(node: Node) -> list[tuple[str, str]]:
-        """
-        Reconstrói o caminho desde `node` até o nó inicial, retornando uma
-        lista de pares (id_filme, id_pessoa) em ordem da origem para o destino.
-
-        Args:
-            node: o nó objetivo (instância de Node) cuja cadeia de pais leva à origem.
-
-        Returns:
-            Lista de tuplas (id_filme, id_pessoa).
-
-        Exemplo:
-            Suponha que temos o seguinte caminho:
-            - Nó inicial: Node(state="1", parent=None, action=None)
-            - Nó intermediário: Node(state="2", parent=nó_inicial, action="A")
-            - Nó final: Node(state="3", parent=nó_intermediário, action="B")
-
-            O caminho reconstruído será:
-            [("A", "2"), ("B", "3")]
-        """
-        path: list[tuple[str, str]] = []
-        while node.parent is not None:
-            # Adiciona o par (id_filme, id_pessoa) ao caminho
-            path.append((node.action, node.state))
-            node = node.parent  # Move para o nó pai
-        path.reverse()  # Inverte o caminho para que fique da origem ao destino
-        return path
-
-    def add_neighbors(node: Node, frontier: QueueFrontier, explored: set[str], target: str) -> list[tuple[str, str]] | None:
-        """
-        Adiciona os vizinhos do nó atual à fronteira, retornando o caminho se o destino for encontrado.
-
-        Args:
-            node: nó atual.
-            frontier: fronteira de busca.
-            explored: conjunto de estados já explorados.
-            target: id da pessoa do destino.
-
-        Returns:
-            Lista de tuplas (id_filme, id_pessoa) se o destino for encontrado, senão None.
-        """
+    # Initialize frontier with starting node
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+    
+    # Keep track of explored states
+    explored = set()
+    
+    while not frontier.empty():
+        # Remove node from frontier
+        node = frontier.remove()
+        
+        # If we have reached the target, reconstruct and return the path
+        if node.state == target:
+            path = []
+            while node.parent is not None:
+                path.append((node.action, node.state))
+                node = node.parent
+            path.reverse()
+            return path
+        
+        # Mark state as explored
+        explored.add(node.state)
+        
+        # Add neighbors to frontier
         for movie_id, person_id in neighbors_for_person(node.state):
             if person_id not in explored and not frontier.contains_state(person_id):
                 child = Node(state=person_id, parent=node, action=movie_id)
                 if person_id == target:
-                    return reconstruct_path(child)
+                    # Reconstruct path immediately if target found
+                    path = []
+                    while child.parent is not None:
+                        path.append((child.action, child.state))
+                        child = child.parent
+                    path.reverse()
+                    return path
                 frontier.add(child)
-        return None
-
-    frontier = initialize_frontier(source_person)
-    explored: set[str] = set()
-
-    while not frontier.empty():
-        node = frontier.remove()
-
-        if node.state == target_person:
-            return reconstruct_path(node)
-
-        explored.add(node.state)
-
-        # Se um vizinho for o destino, add_neighbors retorna o caminho
-        path = add_neighbors(node, frontier, explored, target_person)
-        if path is not None:
-            return path
-
+    
+    # No path found
     return None
 
 
