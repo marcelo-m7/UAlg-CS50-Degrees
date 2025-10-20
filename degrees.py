@@ -1,7 +1,7 @@
 import csv
 import sys
 
-from util import Node, StackFrontier, QueueFrontier
+from util import Node, StackFrontier, QueueFrontier, visualize_path, visualize_path_as_graph
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -82,6 +82,8 @@ def main():
             person2 = people[path[i + 1][1]]["name"]
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
+        visualize_path(path, people, movies)
+        visualize_path_as_graph(path, people, movies)
 
 
 def shortest_path(source, target):

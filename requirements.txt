@@ -1,3 +1,6 @@
 submit50
 check50
 style50
+pandas
+networkx
+matplotlib
