@@ -1,6 +1,7 @@
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import time
 
 
 class Node():
@@ -84,3 +85,22 @@ def visualize_path_as_graph(path, people, movies):
     plt.title("Degrees of Separation Graph")
     plt.savefig("degrees_graph.png")
     print("Graph saved as degrees_graph.png")
+
+
+def measure_execution_time(func, *args, **kwargs):
+    """
+    Measures the execution time of a given function.
+    
+    Args:
+        func: The function to measure.
+        *args: Positional arguments for the function.
+        **kwargs: Keyword arguments for the function.
+    
+    Returns:
+        tuple: (result of func, execution time in seconds)
+    """
+    start_time = time.time()
+    result = func(*args, **kwargs)
+    end_time = time.time()
+    execution_time = end_time - start_time
+    return result, execution_time

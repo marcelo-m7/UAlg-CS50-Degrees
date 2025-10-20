@@ -1,7 +1,7 @@
 import csv
 import sys
 
-from util import Node, StackFrontier, QueueFrontier, visualize_path, visualize_path_as_graph
+from util import Node, StackFrontier, QueueFrontier, visualize_path, visualize_path_as_graph, measure_execution_time
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -69,7 +69,7 @@ def main():
     if target is None:
         sys.exit("Person not found.")
 
-    path = shortest_path(source, target)
+    path, execution_time = measure_execution_time(shortest_path, source, target)
 
     if path is None:
         print("Not connected.")
@@ -84,6 +84,8 @@ def main():
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
         visualize_path(path, people, movies)
         visualize_path_as_graph(path, people, movies)
+    
+    print(f"Tempo de execução: {execution_time:.4f} segundos")
 
 
 def shortest_path(source, target):
