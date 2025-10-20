@@ -86,6 +86,8 @@ Universidade do Algarve
 
 [GitHub](https://github.com/marcelo-m7)
 
+---
+
 ## Anexos
 
 ![style50](style50.png)
@@ -93,4 +95,3 @@ Universidade do Algarve
 ![check50](check50.png)
 
 ![submit50](submit50.png)
-
