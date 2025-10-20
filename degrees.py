@@ -62,12 +62,25 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
-    source = person_id_for_name(input("Name: "))
-    if source is None:
-        sys.exit("Person not found.")
-    target = person_id_for_name(input("Name: "))
-    if target is None:
-        sys.exit("Person not found.")
+    # Solicitar nome de origem até encontrar ou sair
+    while True:
+        name = input("Name: ")
+        if name.lower() == "q":
+            sys.exit("Programa encerrado pelo usuário.")
+        source = person_id_for_name(name)
+        if source is not None:
+            break
+        print("Person not found. Try again or type 'q' to quit.")
+
+    # Solicitar nome de destino até encontrar ou sair
+    while True:
+        name = input("Name: ")
+        if name.lower() == "q":
+            sys.exit("Programa encerrado pelo usuário.")
+        target = person_id_for_name(name)
+        if target is not None:
+            break
+        print("Person not found. Try again or type 'q' to quit.")
 
     path, execution_time = measure_execution_time(shortest_path, source, target)
 
