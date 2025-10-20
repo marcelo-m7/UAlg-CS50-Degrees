@@ -13,6 +13,11 @@ Este repositório faz parte dos trabalhos práticos da disciplina de Inteligênc
 - `util.py`: Implementação das estruturas de dados utilizadas (nó, fronteira de busca).
 - `requirements.txt`: Ferramentas de submissão e validação (submit50, check50, style50).
 - Pasta `large/` e `small/`: Bases de dados CSV com informações de pessoas, filmes e participações.
+- Pasta `docs/`: Documentação de features e melhorias implementadas.
+
+## Features e Melhorias
+
+- **Melhoria na Visualização**: Adicionada funcionalidade para exibir o caminho encontrado em formato de dataframe (tabela) e grafo (imagem salva). Ver [docs/FEATURE_Improving-visualization.md](docs/FEATURE_Improving-visualization.md) para detalhes.
 
 ## Como Executar
 
@@ -71,14 +76,17 @@ Ao executar o programa e informar dois atores, o sistema retorna o número de gr
 - **check50:** Validação automática dos requisitos do projeto.
 - **style50:** Verificação de estilo do código.
 
-## Observações
-
-- Este trabalho prático tem peso 2.4/10 e é considerado de dificuldade fácil.
-- É obrigatório demonstrar o uso das ferramentas de submissão e validação na apresentação.
-
 ---
 
 Universidade do Algarve
 **Marcelo Santos – a79433**
 
 [GitHub](https://github.com/marcelo-m7)
+
+## Anexos
+
+![style50](style50.png)
+
+![check50](check50.png)
+
+![submit50](submit50.png)

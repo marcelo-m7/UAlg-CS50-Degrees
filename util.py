@@ -1,3 +1,8 @@
+import pandas as pd
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
 class Node():
     def __init__(self, state, parent, action):
         self.state = state
@@ -36,3 +41,46 @@ class QueueFrontier(StackFrontier):
             node = self.frontier[0]
             self.frontier = self.frontier[1:]
             return node
+
+
+def visualize_path(path, people, movies):
+    """
+    Visualizes the shortest path as a pandas DataFrame.
+    """
+    if len(path) <= 1:
+        print("No connections to display.")
+        return
+
+    data = []
+    for i in range(1, len(path)):
+        person1 = people[path[i-1][1]]["name"]
+        person2 = people[path[i][1]]["name"]
+        movie = movies[path[i][0]]["title"]
+        data.append({"Step": i, "Person1": person1, "Movie": movie, "Person2": person2})
+
+    df = pd.DataFrame(data)
+    print("Degrees of Separation Path:")
+    print(df.to_string(index=False))
+
+
+def visualize_path_as_graph(path, people, movies):
+    """
+    Visualizes the shortest path as a NetworkX graph and saves a plot.
+    """
+    if len(path) <= 1:
+        print("No connections to display.")
+        return
+
+    G = nx.Graph()
+    for i in range(1, len(path)):
+        person1 = people[path[i-1][1]]["name"]
+        person2 = people[path[i][1]]["name"]
+        movie = movies[path[i][0]]["title"]
+        G.add_edge(person1, person2, movie=movie)
+
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=2000, font_size=10, font_weight='bold')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['movie'] for u, v, d in G.edges(data=True)})
+    plt.title("Degrees of Separation Graph")
+    plt.savefig("degrees_graph.png")
+    print("Graph saved as degrees_graph.png")
