@@ -97,7 +97,6 @@ def shortest_path(source, target):
     frontier.add(start)
     # Conjunto para registrar estados já explorados e evitar revisitas
     explored = set()
-    print(frontier.frontier.__repr__()   + " <- frontier")
     
     # Exploração: enquanto houver nós na fila, processa o próximo da fila (FIFO)
     while not frontier.empty():
@@ -115,7 +114,6 @@ def shortest_path(source, target):
 
         # Marca o nó atual como explorado
         explored.add(node.state)
-        print(explored.__repr__()   + " <- explored")
 
         # Para cada vizinho (ator conectado por filme), verifica se já foi explorado ou está na fila
         for movie_id, person_id in neighbors_for_person(node.state):
