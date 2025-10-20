@@ -20,6 +20,8 @@ Este repositório faz parte dos trabalhos práticos da disciplina de Inteligênc
 - **Melhoria na Visualização**: Adicionada funcionalidade para exibir o caminho encontrado em formato de dataframe (tabela) e grafo (imagem salva). Ver [docs/FEATURE_Improving-visualization.md](docs/FEATURE_Improving-visualization.md) para detalhes.
 - **Medição de Tempo**: Adicionada funcionalidade para medir o tempo de execução do algoritmo BFS. Ver [docs/FEATURE_time-measurement.md](docs/FEATURE_time-measurement.md) para detalhes.
 - **Evitar Fechamento Abrupto**: Implementada validação interativa para entrada de nomes, permitindo tentativas repetidas ou saída voluntária. Ver [docs/FEATURE_Avoid-closure.md](docs/FEATURE_Avoid-closure.md) para detalhes.
+- **Busca Bidirecional**: Implementado algoritmo Bidirectional BFS para busca mais eficiente do caminho mais curto. Ver [docs/FEATURE_Bidirectional-BFS.md](docs/FEATURE_Bidirectional-BFS.md) para detalhes.
+- **Evitar Fechamento Abrupto**: Implementada validação interativa para entrada de nomes, permitindo tentativas repetidas ou saída voluntária. Ver [docs/FEATURE_Avoid-closure.md](docs/FEATURE_Avoid-closure.md) para detalhes.
 
 ## Como Executar
 

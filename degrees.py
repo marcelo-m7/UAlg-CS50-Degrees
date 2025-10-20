@@ -62,6 +62,18 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
+    # Escolher algoritmo
+    print("Escolha o algoritmo:")
+    print("1: BFS tradicional")
+    print("2: Bidirectional BFS")
+    choice = input("Digite 1 ou 2 (padrão: 1): ").strip()
+    if choice == "2":
+        search_func = bidirectional_shortest_path
+        print("Usando Bidirectional BFS.")
+    else:
+        search_func = shortest_path
+        print("Usando BFS tradicional.")
+
     # Solicitar nome de origem até encontrar ou sair
     while True:
         name = input("Name: ")
@@ -82,7 +94,7 @@ def main():
             break
         print("Person not found. Try again or type 'q' to quit.")
 
-    path, execution_time = measure_execution_time(shortest_path, source, target)
+    path, execution_time = measure_execution_time(search_func, source, target)
 
     if path is None:
         print("Not connected.")
@@ -149,6 +161,83 @@ def shortest_path(source, target):
 
     # Se a fila esvaziar sem encontrar o destino, não há caminho possível
     return None
+
+
+def bidirectional_shortest_path(source, target):
+    """
+    Returns the shortest list of (movie_id, person_id) pairs
+    that connect the source to the target using bidirectional BFS.
+
+    If no possible path, returns None.
+    """
+    if source == target:
+        return []
+
+    # Inicialização das fronteiras e explorados para source e target
+    start = Node(state=source, parent=None, action=None)
+    end = Node(state=target, parent=None, action=None)
+    frontier_start = QueueFrontier()
+    frontier_end = QueueFrontier()
+    frontier_start.add(start)
+    frontier_end.add(end)
+    explored_start = set([source])
+    explored_end = set([target])
+
+    # Dicionários para rastrear pais
+    parent_start = {source: None}
+    parent_end = {target: None}
+    action_start = {source: None}
+    action_end = {target: None}
+
+    while not frontier_start.empty() and not frontier_end.empty():
+        # Expande da fonte
+        node_start = frontier_start.remove()
+        for movie_id, person_id in neighbors_for_person(node_start.state):
+            if person_id not in explored_start:
+                explored_start.add(person_id)
+                parent_start[person_id] = node_start.state
+                action_start[person_id] = movie_id
+                frontier_start.add(Node(state=person_id, parent=node_start, action=movie_id))
+                if person_id in explored_end:
+                    # Encontrou interseção, reconstrói caminho
+                    return reconstruct_path(person_id, parent_start, action_start, parent_end, action_end)
+
+        # Expande do alvo
+        node_end = frontier_end.remove()
+        for movie_id, person_id in neighbors_for_person(node_end.state):
+            if person_id not in explored_end:
+                explored_end.add(person_id)
+                parent_end[person_id] = node_end.state
+                action_end[person_id] = movie_id
+                frontier_end.add(Node(state=person_id, parent=node_end, action=movie_id))
+                if person_id in explored_start:
+                    # Encontrou interseção, reconstrói caminho
+                    return reconstruct_path(person_id, parent_start, action_start, parent_end, action_end)
+
+    return None
+
+
+def reconstruct_path(meeting_point, parent_start, action_start, parent_end, action_end):
+    """
+    Reconstrói o caminho a partir do ponto de encontro.
+    """
+    path = []
+    # Caminho da fonte ao ponto de encontro
+    current = meeting_point
+    while parent_start[current] is not None:
+        path.append((action_start[current], current))
+        current = parent_start[current]
+    path.reverse()
+
+    # Caminho do alvo ao ponto de encontro
+    if parent_end[meeting_point] is not None:
+        path.append((action_end[meeting_point], parent_end[meeting_point]))
+        current = parent_end[meeting_point]
+        while parent_end[current] is not None:
+            path.append((action_end[current], parent_end[current]))
+            current = parent_end[current]
+
+    return path
 
 
 def person_id_for_name(name):
