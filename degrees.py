@@ -159,8 +159,8 @@ def shortest_path(source, target):
                     return path
                 frontier.add(child)
 
-    # Se a fila esvaziar sem encontrar o destino, não há caminho possível
-    return None
+        # Se a fila esvaziar sem encontrar o destino, não há caminho possível
+        return None
 
 
 def bidirectional_shortest_path(source, target):
