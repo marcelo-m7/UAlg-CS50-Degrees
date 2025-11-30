@@ -1,11 +1,6 @@
-# Trabalho Prático 1 – Degrees
+# Descrição
 
-**Disciplina:** Inteligência Artificial – Universidade do Algarve
-**Aluno:** Marcelo Santos (a79433)
-
-## Descrição
-
-Este repositório faz parte dos trabalhos práticos da disciplina de Inteligência Artificial, com foco em algoritmos de busca e grafos. O objetivo do TP1 – Degrees é determinar os graus de separação entre atores, ou seja, encontrar o menor caminho de conexões (filmes em comum) entre dois atores do banco de dados.
+O objetivo do  Degrees é determinar os graus de separação entre atores, ou seja, encontrar o menor caminho de conexões (filmes em comum) entre dois atores do banco de dados.
 
 ## Estrutura do Projeto
 
@@ -81,14 +76,6 @@ Ao executar o programa e informar dois atores, o sistema retorna o número de gr
 
 ---
 
-Universidade do Algarve
-**Marcelo Santos – a79433**
-
-[GitHub](https://github.com/marcelo-m7)
-[Repositório](https://github.com/marcelo-m7/UAlg-CS50-Degrees)
-
----
-
 ## Anexos
 
 ![style50](style50.png)
@@ -96,3 +83,4 @@ Universidade do Algarve
 ![check50](check50.png)
 
 ![submit50](submit50.png)
+
